@@ -1,144 +1,260 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-
-const MazeGame = () => {
-  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 2 }); // Position de départ à gauche
-  const [isDragging, setIsDragging] = useState(false);
-  const [hasWon, setHasWon] = useState(false);
-
-  // Labyrinthe simple avec chemin garanti (0 = chemin, 1 = mur)
-  const maze = [
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 1, 0, 0, 0, 0], // Chemin principal
-    [1, 1, 0, 1, 0, 1, 1, 1],
-    [1, 1, 0, 0, 0, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1]
-  ];
-
-  const cellSize = 50; // Cellules plus grandes
-
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    updatePlayerPosition(e);
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      updatePlayerPosition(e);
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Labyrinthe Instagram</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleTouchStart = (e) => {
-    setIsDragging(true);
-    updatePlayerPosition(e.touches[0]);
-  };
-
-  const handleTouchMove = (e) => {
-    if (isDragging) {
-      e.preventDefault();
-      updatePlayerPosition(e.touches[0]);
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f2f5;
     }
-  };
+    
+    .card {
+      background: linear-gradient(to right, #8a3ab9, #e95950, #fcb045);
+      padding: 4px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      max-width: 90vw;
+    }
+    
+    .card-content {
+      background-color: white;
+      padding: 24px;
+      border-radius: 8px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, #8a3ab9, #e95950);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .maze-container {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      touch-action: none;
+    }
+    
+    .cell {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .wall {
+      background: linear-gradient(135deg, #8a3ab9, #e95950, #fcb045);
+    }
+    
+    .path {
+      background-color: white;
+    }
+    
+    .player {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      overflow: hidden;
+      transition: all 0.1s;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+    
+    .player img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .win-message {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #8a3ab9;
+      z-index: 20;
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-content">
+      <div class="header">
+        <h1 class="title">Labyrinthe Instagram</h1>
+        <p class="subtitle">Trouvez la sortie à droite ➡️</p>
+      </div>
+      <div id="maze" class="maze-container">
+        <!-- Le labyrinthe sera généré par JavaScript -->
+        <div id="win-message" class="win-message">
+          🎉 Bravo ! Vous avez gagné ! 🎉
+        </div>
+      </div>
+    </div>
+  </div>
 
-  const updatePlayerPosition = (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const x = Math.floor((event.clientX - rect.left) / cellSize);
-    const y = Math.floor((event.clientY - rect.top) / cellSize);
-
-    if (
-      x >= 0 && x < maze[0].length &&
-      y >= 0 && y < maze.length &&
-      maze[y][x] === 0
-    ) {
-      setPlayerPosition({ x, y });
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Configuration
+      const maze = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 1, 0, 0, 0, 0], // Chemin principal
+        [1, 1, 0, 1, 0, 1, 1, 1],
+        [1, 1, 0, 0, 0, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+      ];
       
-      // Vérifier si le joueur a atteint la sortie
-      if (x === maze[0].length - 1 && y === 2) {
-        setHasWon(true);
+      const cellSize = 50;
+      let playerPosition = { x: 0, y: 2 };
+      let isDragging = false;
+      let hasWon = false;
+      
+      // Référence au conteneur du labyrinthe
+      const mazeContainer = document.getElementById('maze');
+      mazeContainer.style.width = `${maze[0].length * cellSize}px`;
+      mazeContainer.style.height = `${maze.length * cellSize}px`;
+      
+      // Référence au message de victoire
+      const winMessage = document.getElementById('win-message');
+      
+      // Génération du labyrinthe
+      function generateMaze() {
+        for (let y = 0; y < maze.length; y++) {
+          for (let x = 0; x < maze[y].length; x++) {
+            const cell = document.createElement('div');
+            cell.className = `cell ${maze[y][x] === 1 ? 'wall' : 'path'}`;
+            cell.style.left = `${x * cellSize}px`;
+            cell.style.top = `${y * cellSize}px`;
+            mazeContainer.appendChild(cell);
+          }
+        }
       }
-    }
-  };
-
-  useEffect(() => {
-    const cleanup = () => {
-      setIsDragging(false);
-    };
-
-    document.addEventListener('mouseup', cleanup);
-    document.addEventListener('touchend', cleanup);
-
-    return () => {
-      document.removeEventListener('mouseup', cleanup);
-      document.removeEventListener('touchend', cleanup);
-    };
-  }, []);
-
-  return (
-    <Card className="w-fit bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-1">
-      <CardContent className="p-6 bg-white rounded-lg">
-        <div className="text-center mb-4">
-          <h2 className="text-xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
-            Labyrinthe Saint Valentin => Hungry Louise Maze :))
-          </h2>
-          <p className="text-sm text-gray-600">
-            {hasWon ? "🎉 Bravo ! Vous avez gagné ! 🎉" : "Trouvez la sortie à droite ➡️"}
-          </p>
-        </div>
-        <div
-          className="relative rounded-lg overflow-hidden"
-          style={{
-            width: maze[0].length * cellSize,
-            height: maze.length * cellSize,
-          }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleMouseUp}
-        >
-          {maze.map((row, y) =>
-            row.map((cell, x) => (
-              <div
-                key={`${x}-${y}`}
-                className={`absolute ${
-                  cell === 1 
-                    ? 'bg-gradient-to-br from-purple-400 via-pink-500 to-red-500' 
-                    : 'bg-white'
-                }`}
-                style={{
-                  left: x * cellSize,
-                  top: y * cellSize,
-                  width: cellSize,
-                  height: cellSize,
-                }}
-              />
-            ))
-          )}
-          <div
-            className="absolute transition-all duration-100 rounded-full overflow-hidden shadow-lg"
-            style={{
-              left: playerPosition.x * cellSize + cellSize / 4,
-              top: playerPosition.y * cellSize + cellSize / 4,
-              width: cellSize / 2,
-              height: cellSize / 2,
-            }}
-          >
-            <img 
-              src="/api/placeholder/40/40" 
-              alt="Avatar du joueur"
-              className="w-full h-full object-cover rounded-full"
-            />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
-export default MazeGame;
+      
+      // Création du joueur
+      function createPlayer() {
+        const player = document.createElement('div');
+        player.id = 'player';
+        player.className = 'player';
+        player.style.left = `${playerPosition.x * cellSize + cellSize/4}px`;
+        player.style.top = `${playerPosition.y * cellSize + cellSize/4}px`;
+        
+        const playerImg = document.createElement('img');
+        playerImg.src = '/api/placeholder/40/40';
+        playerImg.alt = 'Avatar du joueur';
+        player.appendChild(playerImg);
+        
+        mazeContainer.appendChild(player);
+      }
+      
+      // Mise à jour de la position du joueur
+      function updatePlayerPosition(event) {
+        if (hasWon) return;
+        
+        const rect = mazeContainer.getBoundingClientRect();
+        const x = Math.floor((event.clientX - rect.left) / cellSize);
+        const y = Math.floor((event.clientY - rect.top) / cellSize);
+        
+        if (
+          x >= 0 && x < maze[0].length &&
+          y >= 0 && y < maze.length &&
+          maze[y][x] === 0
+        ) {
+          playerPosition = { x, y };
+          const player = document.getElementById('player');
+          player.style.left = `${playerPosition.x * cellSize + cellSize/4}px`;
+          player.style.top = `${playerPosition.y * cellSize + cellSize/4}px`;
+          
+          // Vérifier si le joueur a atteint la sortie
+          if (x === maze[0].length - 1 && y === 2) {
+            hasWon = true;
+            winMessage.style.display = 'flex';
+          }
+        }
+      }
+      
+      // Gestionnaires d'événements
+      function handleMouseDown(e) {
+        isDragging = true;
+        updatePlayerPosition(e);
+      }
+      
+      function handleMouseMove(e) {
+        if (isDragging) {
+          updatePlayerPosition(e);
+        }
+      }
+      
+      function handleMouseUp() {
+        isDragging = false;
+      }
+      
+      function handleTouchStart(e) {
+        isDragging = true;
+        updatePlayerPosition(e.touches[0]);
+      }
+      
+      function handleTouchMove(e) {
+        if (isDragging) {
+          e.preventDefault();
+          updatePlayerPosition(e.touches[0]);
+        }
+      }
+      
+      // Initialisation du jeu
+      generateMaze();
+      createPlayer();
+      
+      // Ajout des gestionnaires d'événements
+      mazeContainer.addEventListener('mousedown', handleMouseDown);
+      mazeContainer.addEventListener('mousemove', handleMouseMove);
+      mazeContainer.addEventListener('mouseup', handleMouseUp);
+      mazeContainer.addEventListener('touchstart', handleTouchStart);
+      mazeContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
+      mazeContainer.addEventListener('touchend', handleMouseUp);
+      
+      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchend', handleMouseUp);
+    });
+  </script>
+</body>
+</html>
