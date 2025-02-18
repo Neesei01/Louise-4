@@ -1,0 +1,144 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+
+const MazeGame = () => {
+  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 2 }); // Position de départ à gauche
+  const [isDragging, setIsDragging] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+
+  // Labyrinthe simple avec chemin garanti (0 = chemin, 1 = mur)
+  const maze = [
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 1, 0, 0, 0, 0], // Chemin principal
+    [1, 1, 0, 1, 0, 1, 1, 1],
+    [1, 1, 0, 0, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1]
+  ];
+
+  const cellSize = 50; // Cellules plus grandes
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    updatePlayerPosition(e);
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      updatePlayerPosition(e);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    updatePlayerPosition(e.touches[0]);
+  };
+
+  const handleTouchMove = (e) => {
+    if (isDragging) {
+      e.preventDefault();
+      updatePlayerPosition(e.touches[0]);
+    }
+  };
+
+  const updatePlayerPosition = (event) => {
+    const rect = event.target.getBoundingClientRect();
+    const x = Math.floor((event.clientX - rect.left) / cellSize);
+    const y = Math.floor((event.clientY - rect.top) / cellSize);
+
+    if (
+      x >= 0 && x < maze[0].length &&
+      y >= 0 && y < maze.length &&
+      maze[y][x] === 0
+    ) {
+      setPlayerPosition({ x, y });
+      
+      // Vérifier si le joueur a atteint la sortie
+      if (x === maze[0].length - 1 && y === 2) {
+        setHasWon(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const cleanup = () => {
+      setIsDragging(false);
+    };
+
+    document.addEventListener('mouseup', cleanup);
+    document.addEventListener('touchend', cleanup);
+
+    return () => {
+      document.removeEventListener('mouseup', cleanup);
+      document.removeEventListener('touchend', cleanup);
+    };
+  }, []);
+
+  return (
+    <Card className="w-fit bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-1">
+      <CardContent className="p-6 bg-white rounded-lg">
+        <div className="text-center mb-4">
+          <h2 className="text-xl font-bold mb-2 bg-gradient-to-r from-purple-600 to-pink-600 text-transparent bg-clip-text">
+            Labyrinthe Saint Valentin => Hungry Louise Maze :))
+          </h2>
+          <p className="text-sm text-gray-600">
+            {hasWon ? "🎉 Bravo ! Vous avez gagné ! 🎉" : "Trouvez la sortie à droite ➡️"}
+          </p>
+        </div>
+        <div
+          className="relative rounded-lg overflow-hidden"
+          style={{
+            width: maze[0].length * cellSize,
+            height: maze.length * cellSize,
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleMouseUp}
+        >
+          {maze.map((row, y) =>
+            row.map((cell, x) => (
+              <div
+                key={`${x}-${y}`}
+                className={`absolute ${
+                  cell === 1 
+                    ? 'bg-gradient-to-br from-purple-400 via-pink-500 to-red-500' 
+                    : 'bg-white'
+                }`}
+                style={{
+                  left: x * cellSize,
+                  top: y * cellSize,
+                  width: cellSize,
+                  height: cellSize,
+                }}
+              />
+            ))
+          )}
+          <div
+            className="absolute transition-all duration-100 rounded-full overflow-hidden shadow-lg"
+            style={{
+              left: playerPosition.x * cellSize + cellSize / 4,
+              top: playerPosition.y * cellSize + cellSize / 4,
+              width: cellSize / 2,
+              height: cellSize / 2,
+            }}
+          >
+            <img 
+              src="/api/placeholder/40/40" 
+              alt="Avatar du joueur"
+              className="w-full h-full object-cover rounded-full"
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default MazeGame;
