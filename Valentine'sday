@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pour Ma Valentine ❤️</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #fff5f8;
+            color: #333;
+            margin: 0;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2.5em;
+        }
+        #loveMessage {
+            font-size: 1.5em;
+            margin: 20px;
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid #ff4d6d;
+            border-radius: 10px;
+            background-color: #ff4d6d;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        #loveMessage:hover {
+            background-color: white;
+            color: #ff4d6d;
+        }
+        @keyframes hearts {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        .heart {
+            position: absolute;
+            top: -10px;
+            font-size: 24px;
+            color: #ff4d6d;
+            animation: hearts 3s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ma Valentine, tu es la plus belle surprise du quotidien ! ❤️</h1>
+    <p>Clique sur le bouton ci-dessous, tu verras 😉</p>
+    <div id="loveMessage">Je t’aime un peu...</div>
+    
+    <script>
+        const messages = ["Je t’aime un peu...", "Beaucoup...", "À la folie !", "(Bon d'accord, passionnément aussi 😘)"];
+        let index = 0;
+        document.getElementById('loveMessage').addEventListener('click', function() {
+            index = (index + 1) % messages.length;
+            this.textContent = messages[index];
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+        setInterval(createHeart, 500);
+    </script>
+</body>
+</html>
