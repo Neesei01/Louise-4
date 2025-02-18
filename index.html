@@ -3,71 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pour Ma Valentine ❤️</title>
+    <title>Joue ta musique !</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #fff5f8;
-            color: #333;
-            margin: 0;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 2.5em;
-        }
-        #loveMessage {
-            font-size: 1.5em;
-            margin: 20px;
-            cursor: pointer;
-            display: inline-block;
-            padding: 10px 20px;
-            border: 2px solid #ff4d6d;
-            border-radius: 10px;
-            background-color: #ff4d6d;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
             color: white;
-            transition: all 0.3s ease;
+            margin: 0;
+            padding: 0;
         }
-        #loveMessage:hover {
-            background-color: white;
-            color: #ff4d6d;
+        .menu {
+            margin: 50px auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
         }
-        @keyframes hearts {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
+        button {
+            background-color: #ff7e5f;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
         }
-        .heart {
-            position: absolute;
-            top: -10px;
-            font-size: 24px;
-            color: #ff4d6d;
-            animation: hearts 3s linear infinite;
+        button:hover {
+            background-color: #ff5722;
+        }
+        #hidden-message {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h1>Ma Valentine, tu es la plus belle surprise du quotidien ! ❤️</h1>
-    <p>Clique sur le bouton ci-dessous, tu verras 😉</p>
-    <div id="loveMessage">Je t’aime un peu...</div>
+    <h1>Bienvenue dans le jukebox interactif 🎵</h1>
+    <div class="menu">
+        <h2>Choisissez une musique :</h2>
+        <button onclick="playMusic('music1.mp3')">Musique 1</button>
+        <button onclick="playMusic('music2.mp3')">Musique 2</button>
+        <button onclick="playMusic('music3.mp3')">Musique 3</button>
+    </div>
+    <audio id="audio-player" controls style="margin-top: 20px;"></audio>
+    <p id="hidden-message">🎉 Surprise ! Tu as trouvé le message caché ! 🎶</p>
     
     <script>
-        const messages = ["Je t’aime un peu...", "Beaucoup...", "À la folie !", "(Bon d'accord, passionnément aussi 😘)"];
-        let index = 0;
-        document.getElementById('loveMessage').addEventListener('click', function() {
-            index = (index + 1) % messages.length;
-            this.textContent = messages[index];
-        });
-
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.textContent = '❤️';
-            heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 3000);
+        function playMusic(track) {
+            let player = document.getElementById('audio-player');
+            player.src = track;
+            player.play();
+            
+            if (track === 'music3.mp3') {
+                document.getElementById('hidden-message').style.display = 'block';
+            }
         }
-        setInterval(createHeart, 500);
     </script>
 </body>
 </html>
