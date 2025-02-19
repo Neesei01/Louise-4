@@ -3,84 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Spécial Saint-Valentin pour Louise 💖</title>
+    <title>Pour Ma Valentine ❤️</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Poppins', sans-serif;
             text-align: center;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
-            color: white;
+            background-color: #fff5f8;
+            color: #333;
             margin: 0;
-            padding: 0;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
         .menu {
-            margin: 50px auto;
-            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .menu-item {
+            background: white;
             padding: 20px;
             border-radius: 15px;
-            display: inline-block;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s ease;
         }
-        button {
-            background-color: #ff4e78;
-            border: none;
-            padding: 12px 25px;
-            margin: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 25px;
-            color: white;
-            transition: transform 0.3s ease-in-out, background 0.3s;
+        .menu-item:hover {
+            transform: scale(1.05);
         }
-        button:hover {
-            background-color: #ff2853;
-            transform: scale(1.15);
+        .menu-item h2 {
+            color: #ff4d6d;
+            margin-bottom: 10px;
         }
-        .cute {
-            animation: bounce 1.5s infinite alternate;
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-8px); }
-        }
-        .info {
-            display: none;
-            margin-top: 10px;
-            font-size: 20px;
-            font-style: italic;
-            animation: fadeIn 1s ease-in-out;
-            color: #fff4f8;
+        .menu-item p {
+            font-size: 1.1em;
+            color: #555;
         }
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .menu-item {
+            animation: fadeIn 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <h1>💖 Menu Spécial pour Toi, Louise 💖</h1>
-    <p>Un menu concocté avec amour, juste pour toi ! 🌹</p>
+    <h1>Menu Édition Prestige 🍽️</h1>
     <div class="menu">
-        <h2>Nos plats romantiques :</h2>
-        <button onclick="showInfo('plat1')" class="cute">🍓 Douceur de Fraises Amoureuses</button>
-        <p id="plat1" class="info">Un dessert sucré comme tes bisous ! 😘</p>
-        
-        <button onclick="showInfo('plat2')" class="cute">🍫 Fondant au Chocolat Passion</button>
-        <p id="plat2" class="info">Une explosion de bonheur à chaque bouchée, comme quand je te vois ! 💕</p>
-        
-        <button onclick="showInfo('plat3')" class="cute">🍷 Vin Rouge & Velouté d'Amour</button>
-        <p id="plat3" class="info">À savourer ensemble, comme nos plus beaux moments ! 🥂</p>
+        <div class="menu-item">
+            <h2>Premier Frisson</h2>
+            <p>Velouté de potiron aux éclats de noisettes</p>
+        </div>
+        <div class="menu-item">
+            <h2>Coup de Foudre</h2>
+            <p>Tartare de saumon à l’avocat et citron vert</p>
+        </div>
+        <div class="menu-item">
+            <h2>Moment de Grâce</h2>
+            <p>Magret de canard au miel et purée de patates douces</p>
+        </div>
+        <div class="menu-item">
+            <h2>La Pépite</h2>
+            <p>Risotto aux truffes et parmesan affiné</p>
+        </div>
+        <div class="menu-item">
+            <h2>Extase Chocolatée</h2>
+            <p>Fondant au chocolat et son cœur coulant</p>
+        </div>
+        <div class="menu-item">
+            <h2>Bulle d’Élégance</h2>
+            <p>Coupe de champagne rosé</p>
+        </div>
+        <div class="menu-item">
+            <h2>L’Inattendu</h2>
+            <p>Mystère du chef… (surprise garantie)</p>
+        </div>
     </div>
-    
-    <script>
-        function showInfo(id) {
-            let element = document.getElementById(id);
-            if (element.style.display === 'block') {
-                element.style.display = 'none';
-            } else {
-                element.style.display = 'block';
-            }
-        }
-    </script>
 </body>
 </html>
