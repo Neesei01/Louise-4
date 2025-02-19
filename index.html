@@ -60,13 +60,13 @@
       overflow: hidden;
       cursor: pointer;
       touch-action: none;
-      margin: 0 auto; /* Centrer le labyrinthe */
+      margin: 0 auto;
     }
     
     .cell {
       position: absolute;
-      width: 30px; /* Réduit la taille des cellules */
-      height: 30px; /* Réduit la taille des cellules */
+      width: 30px;
+      height: 30px;
     }
     
     .wall {
@@ -80,8 +80,8 @@
     
     .player {
       position: absolute;
-      width: 24px; /* Ajusté pour correspondre à la taille des cellules */
-      height: 24px; /* Ajusté pour correspondre à la taille des cellules */
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       overflow: hidden;
       transition: all 0.1s;
@@ -103,42 +103,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-    
-    .door {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px; /* Ajusté pour correspondre à la taille des cellules */
-      height: 36px; /* Ajusté pour correspondre à la taille des cellules */
-      background: #8b4513;
-      border: 3px solid #654321;
-      border-radius: 5px 0 0 5px;
-      z-index: 5;
-    }
-    
-    .door::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 5px;
-      width: 8px;
-      height: 8px;
-      background: #ffd700;
-      border-radius: 50%;
-      transform: translateY(-50%);
-    }
-    
-    .door.open {
-      animation: openDoor 0.5s forwards;
-    }
-    
-    @keyframes openDoor {
-      to {
-        transform: translateY(-50%) rotateY(45deg);
-        transform-origin: right;
-      }
     }
     
     .win-message {
@@ -165,11 +129,11 @@
 
     .end-image {
       position: absolute;
-      right: -80px; /* Ajusté pour correspondre à la taille des cellules */
+      right: -80px;
       top: 50%;
       transform: translateY(-50%);
-      width: 60px; /* Ajusté pour correspondre à la taille des cellules */
-      height: 60px; /* Ajusté pour correspondre à la taille des cellules */
+      width: 60px;
+      height: 60px;
       border-radius: 10px;
       overflow: hidden;
       z-index: 5;
@@ -180,14 +144,6 @@
       height: 100%;
       object-fit: cover;
     }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
-    }
   </style>
 </head>
 <body>
@@ -195,155 +151,16 @@
     <div class="card-content">
       <div class="header">
         <h1 class="title"> Louise Saint Valentin ❤️ En route vers un bon repas </h1>
-        <p class="subtitle">Trouvez la porte de sortie à droite ➡️</p>
+        <p class="subtitle">Trouvez la sortie à droite ➡️</p>
       </div>
       
       <div id="maze" class="maze-container">
-        <div id="door" class="door"></div>
-        <div id="win-message" class="win-message">
-           Bravo ! 🎉
-        </div>
+        <div id="win-message" class="win-message">Bravo ! 🎉</div>
         <div class="end-image">
           <img src="https://github.com/Neesei01/Louise.github.io/blob/2b1a900af9305c9c9be57075bcd238a6c8fac909/123456.jpeg" alt="Image de fin">
         </div>
       </div>
     </div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const maze = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-      ];
-      
-      const cellSize = 30; // Taille des cellules réduite à 30px
-      let playerPosition = { x: 1, y: 1 };
-      let isDragging = false;
-      let hasWon = false;
-      
-      const mazeContainer = document.getElementById('maze');
-      const door = document.getElementById('door');
-      const winMessage = document.getElementById('win-message');
-      
-      mazeContainer.style.width = `${maze[0].length * cellSize}px`;
-      mazeContainer.style.height = `${maze.length * cellSize}px`;
-      
-      function generateMaze() {
-        for (let y = 0; y < maze.length; y++) {
-          for (let x = 0; x < maze[y].length; x++) {
-            const cell = document.createElement('div');
-            cell.className = `cell ${maze[y][x] === 1 ? 'wall' : 'path'}`;
-            cell.style.left = `${x * cellSize}px`;
-            cell.style.top = `${y * cellSize}px`;
-            mazeContainer.appendChild(cell);
-          }
-        }
-      }
-      
-      function createPlayer() {
-        const player = document.createElement('div');
-        player.id = 'player';
-        player.className = 'player';
-        player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
-        player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
-        
-        const playerImg = document.createElement('img');
-        playerImg.src = 'https://raw.githubusercontent.com/Neesei01/Louise.github.io/b5c7d2bdf898ff06b07683e03a04126427ccd854/IMG_7566.jpeg';
-        playerImg.alt = 'Avatar du joueur';
-        playerImg.onerror = function() {
-          this.src = 'fallback-image.jpg';
-        };
-        player.appendChild(playerImg);
-        
-        mazeContainer.appendChild(player);
-      }
-      
-      function updatePlayerPosition(event) {
-        if (hasWon) return;
-        
-        const rect = mazeContainer.getBoundingClientRect();
-        const x = Math.floor((event.clientX - rect.left) / cellSize);
-        const y = Math.floor((event.clientY - rect.top) / cellSize);
-        
-        if (
-          x >= 0 && x < maze[0].length &&
-          y >= 0 && y < maze.length &&
-          maze[y][x] === 0
-        ) {
-          const dx = x - playerPosition.x;
-          const dy = y - playerPosition.y;
-          
-          if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
-            playerPosition = { x, y };
-            const player = document.getElementById('player');
-            player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
-            player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
-            
-            if (x === maze[0].length - 2 && y === 1) {
-              hasWon = true;
-              door.classList.add('open');
-              setTimeout(() => {
-                winMessage.style.display = 'flex';
-                setTimeout(() => {
-                  window.location.href = 'menu.html';
-                }, 2000);
-              }, 500);
-            }
-          } else {
-            mazeContainer.style.animation = 'shake 0.5s';
-            setTimeout(() => {
-              mazeContainer.style.animation = '';
-            }, 500);
-          }
-        }
-      }
-      
-      function handleMouseDown(e) {
-        isDragging = true;
-        updatePlayerPosition(e);
-      }
-      
-      function handleMouseMove(e) {
-        if (isDragging) {
-          updatePlayerPosition(e);
-        }
-      }
-      
-      function handleMouseUp() {
-        isDragging = false;
-      }
-      
-      function handleTouchStart(e) {
-        isDragging = true;
-        updatePlayerPosition(e.touches[0]);
-      }
-      
-      function handleTouchMove(e) {
-        if (isDragging) {
-          e.preventDefault();
-          updatePlayerPosition(e.touches[0]);
-        }
-      }
-      
-      generateMaze();
-      createPlayer();
-      
-      mazeContainer.addEventListener('mousedown', handleMouseDown);
-      mazeContainer.addEventListener('mousemove', handleMouseMove);
-      mazeContainer.addEventListener('mouseup', handleMouseUp);
-      mazeContainer.addEventListener('touchstart', handleTouchStart);
-      mazeContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-      mazeContainer.addEventListener('touchend', handleMouseUp);
-      
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchend', handleMouseUp);
-    });
-  </script>
 </body>
 </html>
