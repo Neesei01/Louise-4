@@ -65,8 +65,8 @@
     
     .cell {
       position: absolute;
-      width: 30px; /* Taille des cellules réduite */
-      height: 30px; /* Taille des cellules réduite */
+      width: 30px; /* Réduit la taille des cellules */
+      height: 30px; /* Réduit la taille des cellules */
     }
     
     .wall {
@@ -105,22 +105,40 @@
       object-fit: cover;
     }
     
-    .end-image {
+    .door {
       position: absolute;
-      right: -80px; /* Position ajustée */
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 60px; /* Taille ajustée */
-      height: 60px; /* Taille ajustée */
-      border-radius: 10px;
-      overflow: hidden;
+      width: 24px; /* Ajusté pour correspondre à la taille des cellules */
+      height: 36px; /* Ajusté pour correspondre à la taille des cellules */
+      background: #8b4513;
+      border: 3px solid #654321;
+      border-radius: 5px 0 0 5px;
       z-index: 5;
     }
-
-    .end-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    
+    .door::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      width: 8px;
+      height: 8px;
+      background: #ffd700;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .door.open {
+      animation: openDoor 0.5s forwards;
+    }
+    
+    @keyframes openDoor {
+      to {
+        transform: translateY(-50%) rotateY(45deg);
+        transform-origin: right;
+      }
     }
     
     .win-message {
@@ -145,6 +163,24 @@
       to { opacity: 1; }
     }
 
+    .end-image {
+      position: absolute;
+      right: -80px; /* Ajusté pour correspondre à la taille des cellules */
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px; /* Ajusté pour correspondre à la taille des cellules */
+      height: 60px; /* Ajusté pour correspondre à la taille des cellules */
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .end-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     @keyframes shake {
       0% { transform: translateX(0); }
       25% { transform: translateX(-5px); }
@@ -159,15 +195,16 @@
     <div class="card-content">
       <div class="header">
         <h1 class="title"> Louise Saint Valentin ❤️ En route vers un bon repas </h1>
-        <p class="subtitle">Trouvez la sortie à droite ➡️</p>
+        <p class="subtitle">Trouvez la porte de sortie à droite ➡️</p>
       </div>
       
       <div id="maze" class="maze-container">
-        <div class="end-image">
-          <img src="https://github.com/Neesei01/Louise.github.io/blob/2b1a900af9305c9c9be57075bcd238a6c8fac909/123456.jpeg" alt="Image de fin">
-        </div>
+        <div id="door" class="door"></div>
         <div id="win-message" class="win-message">
            Bravo ! 🎉
+        </div>
+        <div class="end-image">
+          <img src="https://github.com/Neesei01/Louise.github.io/blob/2b1a900af9305c9c9be57075bcd238a6c8fac909/123456.jpeg" alt="Image de fin">
         </div>
       </div>
     </div>
@@ -185,12 +222,13 @@
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
       ];
       
-      const cellSize = 30; // Taille des cellules réduite
+      const cellSize = 30; // Taille des cellules réduite à 30px
       let playerPosition = { x: 1, y: 1 };
       let isDragging = false;
       let hasWon = false;
       
       const mazeContainer = document.getElementById('maze');
+      const door = document.getElementById('door');
       const winMessage = document.getElementById('win-message');
       
       mazeContainer.style.width = `${maze[0].length * cellSize}px`;
@@ -249,6 +287,7 @@
             
             if (x === maze[0].length - 2 && y === 1) {
               hasWon = true;
+              door.classList.add('open');
               setTimeout(() => {
                 winMessage.style.display = 'flex';
                 setTimeout(() => {
