@@ -40,70 +40,48 @@
             color: #ff4d6d;
             margin-bottom: 10px;
         }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
+        .menu-item p {
+            font-size: 1.1em;
+            color: #555;
         }
-        .popup img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 10px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .popup .close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 30px;
-            color: white;
-            cursor: pointer;
+        .menu-item {
+            animation: fadeIn 0.5s ease-in-out;
         }
     </style>
+    <script>
+        function showImage(image) {
+            let popup = window.open("", "_blank", "width=600,height=600");
+            popup.document.write('<img src="' + image + '" style="width:100%; height:auto;">');
+        }
+    </script>
 </head>
 <body>
     <h1>Menu Édition de Saint Valentin (19/2/25) 🍽️</h1>
     <div class="menu">
-        <div class="menu-item" onclick="openPopup('7.jpg')">
+        <div class="menu-item" onclick="showImage('7.jpg')">
             <h2>Premier Frisson</h2>
             <p>Devines quand ou cliques directement sur la réponse :)</p>
         </div>
-        <div class="menu-item" onclick="openPopup('8.jpg')">
+        <div class="menu-item" onclick="showImage('8.jpg')">
             <h2>Coup de Foudre</h2>
             <p>Là c'est assez facile à deviner normalement cocotte</p>
         </div>
-        <div class="menu-item" onclick="openPopup('9.jpg')">
+        <div class="menu-item" onclick="showImage('9.jpg')">
             <h2>Moment de Grâce</h2>
-            <p>cc Louise, tu peux cliquer ici aussi</p>
+            <p>cc louise, tu peux cliquer ici aussi</p>
         </div>
-        <div class="menu-item" onclick="openPopup('10.jpg')">
+        <div class="menu-item" onclick="showImage('10.jpg')">
             <h2>La Pépite</h2>
-            <p>Et depuis je t'appelle plus Louise mais Babygirl, Mon poney d'amour</p>
+            <p>Bon, ça devient grâce, j'ai besoin de sommeil là </p>
         </div>
-        <div class="menu-item" onclick="openPopup('11.jpg')">
-            <h2>Extase Chocolatée</h2>
-            <p>Bon, peut-être que je t'appelle pas comme ça, mais je pense à toi</p>
+        <div class="menu-item" onclick="showImage('11.jpg')">
+            <h2>L’Inattendu</h2>
+            <p>Mystère du chef…</p>
         </div>
     </div>
-    
-    <div class="popup" id="popup">
-        <span class="close" onclick="closePopup()">&times;</span>
-        <img id="popup-img" src="" alt="">
-    </div>
-    
-    <script>
-        function openPopup(image) {
-            document.getElementById('popup-img').src = `https://github.com/Neesei01/Louise.github.io/blob/9fa4981a904b3e603c86065cba0a43be5271c0bc/${image}`;
-            document.getElementById('popup').style.display = 'flex';
-        }
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
