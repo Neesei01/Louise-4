@@ -12,336 +12,111 @@
     }
     
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
       background-color: #f0f2f5;
     }
     
-    .card {
-      background: linear-gradient(to right, #8a3ab9, #e95950, #fcb045);
-      padding: 4px;
-      border-radius: 10px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      max-width: 90vw;
-    }
-    
-    .card-content {
-      background-color: white;
-      padding: 24px;
-      border-radius: 8px;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      background: linear-gradient(to right, #8a3ab9, #e95950);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .subtitle {
-      font-size: 14px;
-      color: #666;
-    }
-    
     .maze-container {
+      display: grid;
+      gap: 2px;
+      background-color: #ccc;
       position: relative;
-      border-radius: 8px;
-      overflow: hidden;
-      cursor: pointer;
-      touch-action: none;
+      max-width: 90vw;
+      max-height: 80vh;
+      aspect-ratio: 1 / 1;
     }
     
     .cell {
-      position: absolute;
-      width: 50px;
-      height: 50px;
+      background-color: white;
     }
     
     .wall {
-      background: linear-gradient(135deg, #8a3ab9, #e95950, #fcb045);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .path {
-      background-color: white;
+      background-color: black;
     }
     
     .player {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 10%;
+      aspect-ratio: 1 / 1;
+      background-color: red;
       border-radius: 50%;
-      overflow: hidden;
-      transition: all 0.1s;
-      z-index: 10;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      animation: zoomIn 2s forwards;
-    }
-    
-    @keyframes zoomIn {
-      0% {
-        transform: scale(5);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-    
-    .player img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      transition: 0.2s;
     }
     
     .door {
       position: absolute;
+      width: 10%;
+      aspect-ratio: 1 / 2;
+      background-color: brown;
       right: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 60px;
-      background: #8b4513;
-      border: 3px solid #654321;
-      border-radius: 5px 0 0 5px;
-      z-index: 5;
-    }
-    
-    .door::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 5px;
-      width: 8px;
-      height: 8px;
-      background: #ffd700;
-      border-radius: 50%;
-      transform: translateY(-50%);
-    }
-    
-    .door.open {
-      animation: openDoor 0.5s forwards;
-    }
-    
-    @keyframes openDoor {
-      to {
-        transform: translateY(-50%) rotateY(45deg);
-        transform-origin: right;
-      }
-    }
-    
-    .win-message {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.8);
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      font-weight: bold;
-      color: #8a3ab9;
-      z-index: 20;
-      animation: fadeIn 0.5s;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .end-image {
-      position: absolute;
-      right: -100px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 80px;
-      height: 80px;
-      border-radius: 10px;
-      overflow: hidden;
-      z-index: 5;
-    }
-
-    .end-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0); }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="card-content">
-      <div class="header">
-        <h1 class="title"> Louise Saint Valentin ❤️ En route vers un bon repas </h1>
-        <p class="subtitle">Trouvez la porte de sortie à droite ➡️</p>
-      </div>
-      
-      <div id="maze" class="maze-container">
-        <div id="door" class="door"></div>
-        <div id="win-message" class="win-message">
-           Bravo ! 🎉
-        </div>
-        <div class="end-image">
-          <img src="https://github.com/Neesei01/Louise.github.io/blob/2b1a900af9305c9c9be57075bcd238a6c8fac909/123456.jpeg" alt="Image de fin">
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="maze" class="maze-container"></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener("DOMContentLoaded", () => {
       const maze = [
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1]
       ];
       
-      const cellSize = 50;
-      let playerPosition = { x: 1, y: 1 };
-      let isDragging = false;
-      let hasWon = false;
+      const mazeContainer = document.getElementById("maze");
+      mazeContainer.style.gridTemplateColumns = `repeat(${maze[0].length}, 1fr)`;
+      mazeContainer.style.gridTemplateRows = `repeat(${maze.length}, 1fr)`;
       
-      const mazeContainer = document.getElementById('maze');
-      const door = document.getElementById('door');
-      const winMessage = document.getElementById('win-message');
+      let playerPos = { x: 1, y: 1 };
       
-      mazeContainer.style.width = `${maze[0].length * cellSize}px`;
-      mazeContainer.style.height = `${maze.length * cellSize}px`;
+      maze.forEach((row, y) => {
+        row.forEach((cell, x) => {
+          const div = document.createElement("div");
+          div.className = `cell ${cell === 1 ? "wall" : ""}`;
+          mazeContainer.appendChild(div);
+        });
+      });
       
-      function generateMaze() {
-        for (let y = 0; y < maze.length; y++) {
-          for (let x = 0; x < maze[y].length; x++) {
-            const cell = document.createElement('div');
-            cell.className = `cell ${maze[y][x] === 1 ? 'wall' : 'path'}`;
-            cell.style.left = `${x * cellSize}px`;
-            cell.style.top = `${y * cellSize}px`;
-            mazeContainer.appendChild(cell);
-          }
+      const player = document.createElement("div");
+      player.className = "player";
+      mazeContainer.appendChild(player);
+      
+      const door = document.createElement("div");
+      door.className = "door";
+      mazeContainer.appendChild(door);
+      
+      function updatePlayerPosition() {
+        const cellSize = mazeContainer.clientWidth / maze[0].length;
+        player.style.left = `${playerPos.x * cellSize}px`;
+        player.style.top = `${playerPos.y * cellSize}px`;
+        player.style.width = `${cellSize}px`;
+      }
+      
+      function movePlayer(dx, dy) {
+        const newX = playerPos.x + dx;
+        const newY = playerPos.y + dy;
+        if (maze[newY]?.[newX] === 0) {
+          playerPos = { x: newX, y: newY };
+          updatePlayerPosition();
         }
       }
       
-      function createPlayer() {
-        const player = document.createElement('div');
-        player.id = 'player';
-        player.className = 'player';
-        player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
-        player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
-        
-        const playerImg = document.createElement('img');
-        playerImg.src = 'https://raw.githubusercontent.com/Neesei01/Louise.github.io/b5c7d2bdf898ff06b07683e03a04126427ccd854/IMG_7566.jpeg';
-        playerImg.alt = 'Avatar du joueur';
-        playerImg.onerror = function() {
-          this.src = 'fallback-image.jpg';
-        };
-        player.appendChild(playerImg);
-        
-        mazeContainer.appendChild(player);
-      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowUp") movePlayer(0, -1);
+        if (e.key === "ArrowDown") movePlayer(0, 1);
+        if (e.key === "ArrowLeft") movePlayer(-1, 0);
+        if (e.key === "ArrowRight") movePlayer(1, 0);
+      });
       
-      function updatePlayerPosition(event) {
-        if (hasWon) return;
-        
-        const rect = mazeContainer.getBoundingClientRect();
-        const x = Math.floor((event.clientX - rect.left) / cellSize);
-        const y = Math.floor((event.clientY - rect.top) / cellSize);
-        
-        if (
-          x >= 0 && x < maze[0].length &&
-          y >= 0 && y < maze.length &&
-          maze[y][x] === 0
-        ) {
-          const dx = x - playerPosition.x;
-          const dy = y - playerPosition.y;
-          
-          if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
-            playerPosition = { x, y };
-            const player = document.getElementById('player');
-            player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
-            player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
-            
-            if (x === maze[0].length - 2 && y === 1) {
-              hasWon = true;
-              door.classList.add('open');
-              setTimeout(() => {
-                winMessage.style.display = 'flex';
-                setTimeout(() => {
-                  window.location.href = 'menu.html';
-                }, 2000);
-              }, 500);
-            }
-          } else {
-            mazeContainer.style.animation = 'shake 0.5s';
-            setTimeout(() => {
-              mazeContainer.style.animation = '';
-            }, 500);
-          }
-        }
-      }
-      
-      function handleMouseDown(e) {
-        isDragging = true;
-        updatePlayerPosition(e);
-      }
-      
-      function handleMouseMove(e) {
-        if (isDragging) {
-          updatePlayerPosition(e);
-        }
-      }
-      
-      function handleMouseUp() {
-        isDragging = false;
-      }
-      
-      function handleTouchStart(e) {
-        isDragging = true;
-        updatePlayerPosition(e.touches[0]);
-      }
-      
-      function handleTouchMove(e) {
-        if (isDragging) {
-          e.preventDefault();
-          updatePlayerPosition(e.touches[0]);
-        }
-      }
-      
-      generateMaze();
-      createPlayer();
-      
-      mazeContainer.addEventListener('mousedown', handleMouseDown);
-      mazeContainer.addEventListener('mousemove', handleMouseMove);
-      mazeContainer.addEventListener('mouseup', handleMouseUp);
-      mazeContainer.addEventListener('touchstart', handleTouchStart);
-      mazeContainer.addEventListener('touchmove', handleTouchMove, { passive: false });
-      mazeContainer.addEventListener('touchend', handleMouseUp);
-      
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchend', handleMouseUp);
+      updatePlayerPosition();
     });
   </script>
 </body>
