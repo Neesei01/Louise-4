@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Labyrinthe Louise Hungry (St Valentin <3) !! </title>
+  <title>Labyrinthe Personnalisé</title>
   <style>
     * {
       box-sizing: border-box;
@@ -78,12 +78,11 @@
     
     .player {
       position: absolute;
-      width: 25px;
-      height: 25px;
+      width: 40px; /* Taille augmentée pour votre image */
+      height: 40px; /* Taille augmentée pour votre image */
       border-radius: 50%;
       overflow: hidden;
       transition: all 0.1s;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
       z-index: 10;
     }
     
@@ -91,6 +90,42 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+    
+    .door {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 60px;
+      background: #8b4513;
+      border: 3px solid #654321;
+      border-radius: 5px 0 0 5px;
+      z-index: 5;
+    }
+    
+    .door::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      width: 8px;
+      height: 8px;
+      background: #ffd700;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .door.open {
+      animation: openDoor 0.5s forwards;
+    }
+    
+    @keyframes openDoor {
+      to {
+        transform: translateY(-50%) rotateY(45deg);
+        transform-origin: right;
+      }
     }
     
     .win-message {
@@ -120,13 +155,14 @@
   <div class="card">
     <div class="card-content">
       <div class="header">
-        <h1 class="title">Labyrinthe Instagram</h1>
-        <p class="subtitle">Trouvez la sortie à droite ➡️</p>
+        <h1 class="title">Labyrinthe Personnalisé</h1>
+        <p class="subtitle">Trouvez la porte de sortie à droite ➡️</p>
       </div>
+      
       <div id="maze" class="maze-container">
-        <!-- Le labyrinthe sera généré par JavaScript -->
+        <div id="door" class="door"></div>
         <div id="win-message" class="win-message">
-          🎉 Bravo ! Vous avez gagné ! 🎉
+          🎉 Bravo ! Vous avez trouvé la sortie ! 🎉
         </div>
       </div>
     </div>
@@ -134,11 +170,10 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Configuration
       const maze = [
         [1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1],
-        [0, 0, 0, 1, 0, 0, 0, 0], // Chemin principal
+        [0, 0, 0, 1, 0, 0, 0, 0],
         [1, 1, 0, 1, 0, 1, 1, 1],
         [1, 1, 0, 0, 0, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1]
@@ -149,15 +184,13 @@
       let isDragging = false;
       let hasWon = false;
       
-      // Référence au conteneur du labyrinthe
       const mazeContainer = document.getElementById('maze');
+      const door = document.getElementById('door');
+      const winMessage = document.getElementById('win-message');
+      
       mazeContainer.style.width = `${maze[0].length * cellSize}px`;
       mazeContainer.style.height = `${maze.length * cellSize}px`;
       
-      // Référence au message de victoire
-      const winMessage = document.getElementById('win-message');
-      
-      // Génération du labyrinthe
       function generateMaze() {
         for (let y = 0; y < maze.length; y++) {
           for (let x = 0; x < maze[y].length; x++) {
@@ -170,23 +203,21 @@
         }
       }
       
-      // Création du joueur
       function createPlayer() {
         const player = document.createElement('div');
         player.id = 'player';
         player.className = 'player';
-        player.style.left = `${playerPosition.x * cellSize + cellSize/4}px`;
-        player.style.top = `${playerPosition.y * cellSize + cellSize/4}px`;
+        player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
+        player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
         
         const playerImg = document.createElement('img');
-        playerImg.src = 'https://github.com/Neesei01/Louise.github.io/blob/dd28a11164b7d95d8fe74301b8a33f07dcd31707/IMG_7566.jpeg';
+        playerImg.src = 'https://raw.githubusercontent.com/Neesei01/Louise.github.io/b5c7d2bdf898ff06b07683e03a04126427ccd854/IMG_7566.jpeg';
         playerImg.alt = 'Avatar du joueur';
         player.appendChild(playerImg);
         
         mazeContainer.appendChild(player);
       }
       
-      // Mise à jour de la position du joueur
       function updatePlayerPosition(event) {
         if (hasWon) return;
         
@@ -201,18 +232,19 @@
         ) {
           playerPosition = { x, y };
           const player = document.getElementById('player');
-          player.style.left = `${playerPosition.x * cellSize + cellSize/4}px`;
-          player.style.top = `${playerPosition.y * cellSize + cellSize/4}px`;
+          player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
+          player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
           
-          // Vérifier si le joueur a atteint la sortie
           if (x === maze[0].length - 1 && y === 2) {
             hasWon = true;
-            winMessage.style.display = 'flex';
+            door.classList.add('open');
+            setTimeout(() => {
+              winMessage.style.display = 'flex';
+            }, 500);
           }
         }
       }
       
-      // Gestionnaires d'événements
       function handleMouseDown(e) {
         isDragging = true;
         updatePlayerPosition(e);
@@ -240,11 +272,9 @@
         }
       }
       
-      // Initialisation du jeu
       generateMaze();
       createPlayer();
       
-      // Ajout des gestionnaires d'événements
       mazeContainer.addEventListener('mousedown', handleMouseDown);
       mazeContainer.addEventListener('mousemove', handleMouseMove);
       mazeContainer.addEventListener('mouseup', handleMouseUp);
