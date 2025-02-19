@@ -60,12 +60,13 @@
       overflow: hidden;
       cursor: pointer;
       touch-action: none;
+      margin: 0 auto; /* Centrer le labyrinthe */
     }
     
     .cell {
       position: absolute;
-      width: 50px;
-      height: 50px;
+      width: 30px; /* Réduit la taille des cellules */
+      height: 30px; /* Réduit la taille des cellules */
     }
     
     .wall {
@@ -79,8 +80,8 @@
     
     .player {
       position: absolute;
-      width: 40px;
-      height: 40px;
+      width: 24px; /* Ajusté pour correspondre à la taille des cellules */
+      height: 24px; /* Ajusté pour correspondre à la taille des cellules */
       border-radius: 50%;
       overflow: hidden;
       transition: all 0.1s;
@@ -109,8 +110,8 @@
       right: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 60px;
+      width: 24px; /* Ajusté pour correspondre à la taille des cellules */
+      height: 36px; /* Ajusté pour correspondre à la taille des cellules */
       background: #8b4513;
       border: 3px solid #654321;
       border-radius: 5px 0 0 5px;
@@ -164,11 +165,11 @@
 
     .end-image {
       position: absolute;
-      right: -100px;
+      right: -80px; /* Ajusté pour correspondre à la taille des cellules */
       top: 50%;
       transform: translateY(-50%);
-      width: 80px;
-      height: 80px;
+      width: 60px; /* Ajusté pour correspondre à la taille des cellules */
+      height: 60px; /* Ajusté pour correspondre à la taille des cellules */
       border-radius: 10px;
       overflow: hidden;
       z-index: 5;
@@ -221,7 +222,7 @@
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
       ];
       
-      const cellSize = 50;
+      const cellSize = 30; // Taille des cellules réduite à 30px
       let playerPosition = { x: 1, y: 1 };
       let isDragging = false;
       let hasWon = false;
@@ -230,16 +231,16 @@
       const door = document.getElementById('door');
       const winMessage = document.getElementById('win-message');
       
-      mazeContainer.style.width = ${maze[0].length * cellSize}px;
-      mazeContainer.style.height = ${maze.length * cellSize}px;
+      mazeContainer.style.width = `${maze[0].length * cellSize}px`;
+      mazeContainer.style.height = `${maze.length * cellSize}px`;
       
       function generateMaze() {
         for (let y = 0; y < maze.length; y++) {
           for (let x = 0; x < maze[y].length; x++) {
             const cell = document.createElement('div');
-            cell.className = cell ${maze[y][x] === 1 ? 'wall' : 'path'};
-            cell.style.left = ${x * cellSize}px;
-            cell.style.top = ${y * cellSize}px;
+            cell.className = `cell ${maze[y][x] === 1 ? 'wall' : 'path'}`;
+            cell.style.left = `${x * cellSize}px`;
+            cell.style.top = `${y * cellSize}px`;
             mazeContainer.appendChild(cell);
           }
         }
@@ -249,8 +250,8 @@
         const player = document.createElement('div');
         player.id = 'player';
         player.className = 'player';
-        player.style.left = ${playerPosition.x * cellSize + cellSize/6}px;
-        player.style.top = ${playerPosition.y * cellSize + cellSize/6}px;
+        player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
+        player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
         
         const playerImg = document.createElement('img');
         playerImg.src = 'https://raw.githubusercontent.com/Neesei01/Louise.github.io/b5c7d2bdf898ff06b07683e03a04126427ccd854/IMG_7566.jpeg';
@@ -281,8 +282,8 @@
           if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
             playerPosition = { x, y };
             const player = document.getElementById('player');
-            player.style.left = ${playerPosition.x * cellSize + cellSize/6}px;
-            player.style.top = ${playerPosition.y * cellSize + cellSize/6}px;
+            player.style.left = `${playerPosition.x * cellSize + cellSize/6}px`;
+            player.style.top = `${playerPosition.y * cellSize + cellSize/6}px`;
             
             if (x === maze[0].length - 2 && y === 1) {
               hasWon = true;
