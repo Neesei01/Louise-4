@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre Planner d'Activités</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Là je m'amuse bcp ❤️</h1>
+      <p>A défaut d'un calendly, j'apprends des choses et je propose des activitées :)).</p>
+    </div>
+  </header>
 
+  <section id="activity-planner">
+    <h2>Notre petit planner</h2>
+    <ul>
+      <li><input type="checkbox" id="activity1"> <label for="activity1">Regarder le coucher de soleil</label></li>
+      <li><input type="checkbox" id="activity2"> <label for="activity2">Cuisiner un dîner romantique</label></li>
+      <li><input type="checkbox" id="activity3"> <label for="activity3">Se promener dans le parc</label></li>
+      <li><input type="checkbox" id="activity4"> <label for="activity4">Écrire des lettres d'amour</label></li>
+      <li><input type="checkbox" id="activity5"> <label for="activity5">Planifier un week-end en amoureux</label></li>
+    </ul>
+  </section>
+
+  <section id="countdown">
+    <h2>Compte à Rebours</h2>
+    <div id="timer">
+      <span id="days"></span> Jours
+      <span id="hours"></span> Heures
+      <span id="minutes"></span> Minutes
+      <span id="seconds"></span> Secondes
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2>Nos Souvenirs</h2>
+    <div class="photo-grid">
+      <img src="https://via.placeholder.com/200" alt="Souvenir 1">
+      <img src="https://via.placeholder.com/200" alt="Souvenir 2">
+      <img src="https://via.placeholder.com/200" alt="Souvenir 3">
+    </div>
+    <input type="file" id="upload" accept="image/*">
+    <button onclick="uploadPhoto()">Ajouter une Photo</button>
+  </section>
+
+  <footer>
+    <p>Fait avec ❤️ par le cousin d'andrew tate</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
