@@ -1,1 +1,120 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(135deg, #fff5f5, #ffe3e3);
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+}
+
+header {
+  background: linear-gradient(135deg, #ff6f61, #ff9a9e);
+  padding: 60px 20px;
+  color: white;
+  clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+header h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+section {
+  padding: 40px 20px;
+  margin: 40px auto;
+  max-width: 800px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-family: 'Pacifico', cursive;
+  color: #ff6f61;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 15px 0;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+#timer {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ff6f61;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.photo-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.photo-grid img {
+  border-radius: 10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.photo-grid img:hover {
+  transform: scale(1.05);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+button {
+  background: #ff6f61;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #ff4a3d;
+}
+
+footer {
+  background: #333;
+  color: white;
+  padding: 20px;
+  margin-top: 40px;
+}
