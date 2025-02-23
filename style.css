@@ -15,7 +15,7 @@ body {
 
 header {
   background: linear-gradient(135deg, #ff6f61, #ff9a9e);
-  padding: 30px 20px;
+  padding: 5px 20px;
   color: white;
   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
 }
@@ -119,7 +119,8 @@ footer {
   margin-top: 40px;
 }
 
-#schedule-activity {
+#schedule-activity,
+#activity-planner{
   background: #fff;
   padding: 40px 20px;
   margin: 40px auto;
