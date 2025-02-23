@@ -43,3 +43,41 @@ function uploadPhoto() {
     reader.readAsDataURL(file);
   };
 }
+
+// Formulaire de planification d'activité
+const form = document.getElementById("activity-form");
+const formMessage = document.getElementById("form-message");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Empêche le rechargement de la page
+
+  const formData = new FormData(form);
+  const data = {
+    activity: formData.get("activity-name"),
+    date: formData.get("activity-date"),
+    time: formData.get("activity-time"),
+  };
+
+  
+  try {
+    const response = await fetch("https://formspree.io/f/mldgklow", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      formMessage.textContent = "Activité planifiée avec succès ! 🎉";
+      formMessage.style.color = "green";
+      form.reset(); // Réinitialise le formulaire
+    } else {
+      formMessage.textContent = "Une erreur s'est produite. Réessaie plus tard.";
+      formMessage.style.color = "red";
+    }
+  } catch (error) {
+    formMessage.textContent = "Erreur de connexion. Réessaie plus tard.";
+    formMessage.style.color = "red";
+  }
+});
