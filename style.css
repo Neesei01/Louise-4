@@ -120,7 +120,7 @@ footer {
 }
 
 #schedule-activity,
-#activity-planner{
+#activity-planner {
   background: #fff;
   padding: 40px 20px;
   margin: 40px auto;
@@ -129,26 +129,30 @@ footer {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#activity-form {
+#activity-form,
+#activity-planner {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-#activity-form label {
+#activity-form label,
+#activity-planner {
   font-size: 1.1rem;
   font-weight: 500;
   color: #333;
 }
 
-#activity-form input {
+#activity-form input,
+#activity-planner {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 1rem;
 }
 
-#activity-form button {
+#activity-form button,
+#activity-planner {
   background: #ff6f61;
   color: white;
   border: none;
@@ -159,6 +163,7 @@ footer {
   transition: background 0.3s ease;
 }
 
+#activity-planner,
 #activity-form button:hover {
   background: #ff4a3d;
 }
