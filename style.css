@@ -118,3 +118,52 @@ footer {
   padding: 20px;
   margin-top: 40px;
 }
+
+#schedule-activity {
+  background: #fff;
+  padding: 40px 20px;
+  margin: 40px auto;
+  max-width: 800px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#activity-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#activity-form label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+#activity-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#activity-form button {
+  background: #ff6f61;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+#activity-form button:hover {
+  background: #ff4a3d;
+}
+
+#form-message {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: #333;
+}
