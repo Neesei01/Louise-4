@@ -33,7 +33,7 @@ header p {
 
 section {
   padding: 40px 20px;
-  margin: 40px auto;
+  margin: 10px auto;
   max-width: 800px;
   background: white;
   border-radius: 15px;
@@ -44,7 +44,7 @@ h2 {
   font-family: 'Pacifico', cursive;
   color: #ff6f61;
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 ul {
